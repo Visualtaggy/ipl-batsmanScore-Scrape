@@ -20,13 +20,19 @@ function cb(error, response, html) {
 function webScrape(html) {
   let select_tool = cheerio.load(html);
   let rawTeamNames = select_tool("p.name");
+  let scoreCards = select_tool("a[data-hover=Scorecard]");
   let names = [];
   //Looping over all names
   for (let i = 0; i < rawTeamNames.length; i++) {
     names = select_tool(rawTeamNames[i]).text();
-    
-    //Create folder function handles duplicate entries 
+    //Create folder function handles duplicate entries
     createFolders(names);
+  }
+  //ScoreCard
+  for (let i = 0; i < scoreCards.length; i++) {
+    links = select_tool(scoreCards[i]).attr("href");
+    //adding base link
+    console.log("https://www.espncricinfo.com" + links);
   }
 }
 
